@@ -140,6 +140,7 @@ function format_question(){
         #jq .[0].question
 
         question=$( cat ${temp_quiz} | jq .[0].question )
+        difficulty=$( cat ${temp_quiz} | jq .[0].difficulty )
         answer_a=$( cat ${temp_quiz} | jq .[0].answers.answer_a )
         answer_b=$( cat ${temp_quiz} | jq .[0].answers.answer_b )
         answer_c=$( cat ${temp_quiz} | jq .[0].answers.answer_c )
@@ -225,8 +226,11 @@ function check_answer() {
 }
 
 menu() {
+        echo -ne "$(ColorBlue 'Category:')" $(ColorGreen " ${selected_category}")
         echo ""
-multiple_correct_answers
+        echo -ne "$(ColorBlue 'Difficulty:')" $(ColorGreen " ${difficulty}") 
+        echo ""
+        multiple_correct_answers
         echo -ne "
 ${question}
 "
