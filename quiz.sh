@@ -4,8 +4,11 @@
 # Version: 1.0.0
 ##
 
-#Env file for API key
-source ./.env
+# Get the directory of the script
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+
+# Load the .env file from the script's directory
+source "${script_dir}/.env"
 
 ##
 # Colors
