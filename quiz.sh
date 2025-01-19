@@ -1,9 +1,11 @@
 #!/bin/bash
-
 ##
 # A BASH Wrapper for the quizapi.io API
 # Version: 1.0.0
 ##
+
+#Env file for API key
+source ./.env
 
 ##
 # Colors
@@ -67,7 +69,7 @@ while getopts "a:c:d:t:" o; do
             API_KEY=${OPTARG}
             ;;
         c)
-            category=${OPTARG}
+            categories="$OPTARG"
             ;;
         d)
             difficulty=${OPTARG}
@@ -91,10 +93,18 @@ if [ -z "${API_KEY}" ]; then
 fi
 
 ##
+# Разделить категории по запятой в массив
+IFS=',' read -r -a category_array <<< "$categories"
+
+##
+# Случайно выбрать одну категорию из массива 
+selected_category=${category_array[$RANDOM % ${#category_array[@]}]}
+
+##
 # Question formatting
 ##
 function get_questions(){
-        content=$( curl -Ls ${url}/${quiz_endpoint} -G -d limit=1 -d category=${category} -d difficulty=${difficulty} -d tags=${tags} -H "X-Api-Key: ${API_KEY}" -o ${temp_quiz}  )
+        content=$( curl -Ls ${url}/${quiz_endpoint} -G -d limit=1 -d category=${selected_category} -d difficulty=${difficulty} -d tags=${tags} -H "X-Api-Key: ${API_KEY}" -o ${temp_quiz}  )
 }
 
 ##
